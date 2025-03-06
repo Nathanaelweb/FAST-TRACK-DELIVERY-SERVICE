@@ -1,0 +1,98 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #ffe6e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.chat-container {
+  width: 350px;
+  background-image: url(pink-background.gif);
+  
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border: 3px solid #ff0062;
+ 
+ 
+}
+
+h2 {
+  color: #a80000;
+  text-align: center;
+  font-family: cursive;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+  
+}
+
+.sender-message {
+  background-color: #a80000;
+  color: white;
+  text-align: right;
+  border-radius: 10px 10px 0 10px;
+  margin-left: 120px;
+  width: 200px;
+  padding: 5px 5px;
+  box-shadow: 0px 0px 5px rgba(119, 118, 118, 0.671);
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.receiver-message {
+  background-color: rgba(236, 45, 87, 0.842);
+  
+  color: white;
+  text-align: left;
+  border-radius: 10px 10px 10px 0;
+  margin-right: 60px;
+  width: 200px;
+  padding: 5px 5px;
+  box-shadow: 0px 0px 5px rgba(119, 118, 118, 0.671);
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+  font-weight: bold;
+}
+button {
+  width: 25%;
+  padding: 8px;
+  font-weight: bold;
+  color: rgb(255, 0, 0);
+  border: none;
+  cursor: pointer;
+  animation: rrr 3s infinite;
+  border-radius: 10px 10px 10px;
+  margin-bottom: -20px;
+}
+ input{
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+height: 25px;
+background-color: rgb(255, 255, 255);
+  border-radius: 10px 10px 10px;
+}
+@keyframes rrr{
+  0%,100%{
+      transform: translate(1vh) scale(0.6);
+  }
+  50%{
+      transform: translate(1vh) scale(1);
+  }
+}
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Package</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Include jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Include jsPDF AutoTable plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.18/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <h2>Track Your Package</h2>
+    <input type="text" id="trackingIdInput" placeholder="Enter Tracking ID">
+    <button onclick="trackPackage()">Track Package</button>
+
+    <div id="packageDetails"></div>
+
+    <!-- Button to generate invoice -->
+    <button id="generateInvoiceButton" style="display: none;" onclick="generateInvoice()">Generate Invoice</button>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+    <script src="track.js"></script>
+</body>
+</html>

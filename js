@@ -1,0 +1,1 @@
+        doc.addImage('delivery-logo-design-template-a4d80ebb3305fef2afe82c687e994b6b_screen-removebg-preview.png', 'PNG', 150, 200, 50, 50);

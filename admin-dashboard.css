@@ -1,0 +1,47 @@
+.package-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    color: black;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.form-row label {
+    font-weight: bold;
+    min-width: 130px;
+}
+
+.form-row input,
+.form-row select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #0056b3;
+}

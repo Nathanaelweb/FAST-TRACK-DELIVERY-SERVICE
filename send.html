@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sender Chat</title>
+    <link rel="stylesheet" href="sender.css">
+</head>
+<body>
+    <div class="chat-container">
+        <h2>YOUR CHAT</h2>
+       
+        <div id="chat-box"></div>
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+        <input type="file" accept="image/*" id="image-input" style="display:none;" onchange="sendImage(event)">
+<button onclick="document.getElementById('image-input').click()">📷 Send Picture</button>
+
+<button onclick="openCamera()">📸 Snap Picture</button>
+<video id="camera" autoplay style="display:none;"></video>
+<canvas id="snapshot" style="display:none;"></canvas>
+        <button onclick="clearChat()">Clear Chat</button>
+    </div>
+    <script src="send.js"></script>
+    
+</body>
+</html>

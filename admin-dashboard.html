@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<!-- Logo Section -->
+<div class="logo-container">
+    <img src="delivery-logo-design-template-a4d80ebb3305fef2afe82c687e994b6b_screen-removebg-preview.png" alt="FAST TRACK DELIVERY SERVICE" class="logo">
+  </div>
+<!-- admin-dashboard.html -->
+<div class="head">
+<div id="dashboard">
+    <h1>Welcome to Fast Tack Delivery Service <br> This is The Admin Dashboard</h1>
+</div>
+    <div class="id" id="agentIdSection">
+        <p><strong>Agent ID:</strong> <span id="agentIdDisplay">Loading...</span></p>
+    </div>
+
+    <!-- Other dashboard content -->
+</div>
+
+
+
+<script>
+    // Fetch admin account info from localStorage
+    const adminAccount = JSON.parse(localStorage.getItem('adminAccount'));
+    if (adminAccount && adminAccount.agentId) {
+        document.getElementById('agentIdDisplay').innerText = adminAccount.agentId;
+    } else {
+        document.getElementById('agentIdDisplay').innerText = 'No Agent ID generated.';
+    }
+
+    // Initialize the chat when the agent enters the Chat ID
+    function startChat() {
+        const chatId = document.getElementById('chatIdInput').value;
+        if (chatId.trim() === '') {
+            alert('Please enter a valid Chat ID.');
+            return;
+        }
+        // Store the chatId for the current session
+        localStorage.setItem('currentChatId', chatId);
+
+        // Enable the send button and load the chat history
+        document.getElementById('sendMessageBtn').disabled = false;
+        loadChatHistory();
+    }
+
+    // Load chat history for the selected chat ID
+    function loadChatHistory() {
+        const chatId = localStorage.getItem('currentChatId');
+        const chatHistory = JSON.parse(localStorage.getItem(chatId)) || [];
+        const chatMessagesDiv = document.getElementById('chatMessages');
+        chatMessagesDiv.innerHTML = ''; // Clear existing messages
+
+        chatHistory.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.innerHTML = `<strong>${message.sender} (${message.timestamp}):</strong> <br> ${message.message}`;
+            chatMessagesDiv.appendChild(messageDiv);
+        });
+
+        // Scroll to the bottom of the chat
+        chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+    }
+
+    // Send a new message from the admin (agent)
+    function sendMessage() {
+        const message = document.getElementById('messageInput').value;
+        if (message.trim() === '') return;
+
+        const chatId = localStorage.getItem('currentChatId');
+        const timestamp = new Date().toLocaleTimeString();
+
+        // Create the message object
+        const newMessage = {
+            sender: 'Agent',
+            message: message,
+            timestamp: timestamp
+        };
+
+        // Append the message to the chat history
+        const chatHistory = JSON.parse(localStorage.getItem(chatId)) || [];
+        chatHistory.push(newMessage);
+        localStorage.setItem(chatId, JSON.stringify(chatHistory));
+
+        // Display the new message in the chat
+        loadChatHistory();
+
+        // Clear the input and disable the send button again
+        document.getElementById('messageInput').value = '';
+        document.getElementById('sendMessageBtn').disabled = true;
+    }
+
+    // Optional: Function to load all chats (for admin to view multiple chat histories)
+    function loadAllChats() {
+        const allChats = Object.keys(localStorage).filter(key => key.startsWith('chat_'));
+        allChats.forEach(chatId => {
+            const chatHistory = JSON.parse(localStorage.getItem(chatId));
+            console.log(`Chat ID: ${chatId}`, chatHistory);
+        });
+    }
+</script>
+
+<style>
+    /* Styling for Chat Section */
+    #chatBox {
+        margin: 20px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    #chatMessages {
+        height: 300px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .message {
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+    }
+
+    .message strong {
+        color: #333;
+    }
+
+    #messageInput {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+    }
+
+    #sendMessageBtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    #sendMessageBtn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+</style>
+</body>
+</html>
+<body id="body">
+    <h2>Welcome, <span id="adminName"></span> (Admin)</h2>
+    <button onclick="logoutAdmin()">Logout</button>
+
+    <!-- Dark Mode Toggle -->
+    <label for="darkModeToggle">Dark Mode:</label>
+    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+    
+    <!-- Add New Package Form -->
+    <h3>Add New Package</h3>
+    <form id="addPackageForm" onsubmit="addPackage(event)">
+      
+        <label for="sender">Sender Name:</label>
+        <input type="text" id="sender" required>
+    
+        <label for="receiver">Receiver Name:</label>
+        <input type="text" id="receiver" required>
+    
+        <label for="receiverEmail">Receiver Email:</label>
+        <input type="email" id="receiverEmail" required></div>
+      
+        <label for="receiverPhone">Receiver Phone:</label>
+        <input type="tel" id="receiverPhone" required>
+    
+        <label for="receiverAddress">Receiver Address:</label>
+        <input type="text" id="receiverAddress" required>
+    
+        <label for="location">Final Delivery Location:</label>
+        <input type="text" id="location" required></div>
+    
+     
+        <label for="currentLocation">Current Package Location:</label>
+        <input type="text" id="currentLocation" required>
+    
+        <label for="weight">Package Weight (kg):</label>
+        <input type="number" id="weight" required>
+    
+        <label for="deliveryFee">Package Delivery Fee ($):</label>
+        <input type="number" id="deliveryFee" required></div>
+    
+        <button type="submit">Add Package</button>
+    </form>
+
+    <!-- Display Added Packages in a Table -->
+<h3>Package List</h3>
+<div class="table-responsive">
+    <table id="packageTable">
+        <thead>
+            <tr>
+                <th>Tracking ID</th>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Receiver Email</th>
+                <th>Receiver Phone</th>
+                <th>Receiver Address</th>
+                <th>Final Location</th>
+                <th>Current Location</th>
+                <th>Weight (kg)</th>
+                <th>Delivery Fee ($)</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="packageList"></tbody>
+    </table>
+</div>
+
+<!-- Add some styles to handle responsiveness -->
+<style>
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+        color: black;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    /* Make the table scrollable on small screens */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ensure table cells break correctly on smaller screens */
+    td {
+        word-wrap: break-word;
+        max-width: 200px;
+    }
+
+    /* Media Query for smaller screens */
+    @media (max-width: 768px) {
+        th, td {
+            font-size: 12px;
+        }
+
+        table {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        table {
+            font-size: 12px;
+        }
+        th, td {
+            padding: 8px;
+        }
+    }
+</style>
+
+    <!-- Package Management -->
+    <h3>Manage Packages</h3>
+    <input type="text" id="trackingId" placeholder="Enter Tracking ID">
+    <input type="text" id="packageStatus" placeholder="Update Status">
+    <button onclick="updatePackage()">Update Package</button>
+
+    <!-- Package Statistics -->
+    <h3>Package Statistics</h3>
+    <p>Total Packages: <span id="totalPackages"></span></p>
+    <p>Packages in Transit: <span id="inTransit"></span></p>
+    <p>Delivered Packages: <span id="delivered"></span></p>
+
+    <!-- Search Package -->
+    <h3>Search Package</h3>
+    <input type="text" id="searchPackage" placeholder="Search by Tracking ID" onkeyup="searchPackage()">
+    <ul id="searchResults"></ul>
+
+    <!-- Package Details -->
+    <h3>Package Details</h3>
+    <div id="packageDetails">
+        <input type="text" id="packageTrackingId" placeholder="Enter Tracking ID">
+        <button onclick="viewPackageDetails()">View Package</button>
+        <div id="details"></div>
+    </div>
+    <div class="good">
+    
+        <h1><a href="receive.html">live chat</a> </h1>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>

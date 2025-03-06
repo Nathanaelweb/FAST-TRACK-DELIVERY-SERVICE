@@ -1,0 +1,240 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #3498db, #8e44ad);
+    color: white;
+    text-align: center;
+    padding: 50px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Form Styling */
+form {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.5s ease-in-out;
+    color: black;
+}
+
+input {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    transition: transform 0.3s ease-in-out;
+}
+
+input:focus {
+    transform: scale(1.05);
+}
+
+button {
+    background: #f39c12;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+    background: #e67e22;
+    transform: scale(1.1);
+}
+
+/* Link Styling */
+a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #f39c12;
+}
+
+/* Dashboard Styling */
+h2 {
+    animation: fadeIn 1s ease-in-out;
+}
+
+#packageList {
+    text-align: left;
+    max-width: 300px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    list-style: none;
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+#packageList li {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+}
+
+#packageList li:hover {
+    transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+/* General Dark Mode Styling */
+body.dark-mode {
+    background: #2c3e50;
+    color: #ecf0f1;
+}
+
+form.dark-mode {
+    background: rgba(44, 62, 80, 0.8);
+}
+
+button.dark-mode {
+    background: #e74c3c;
+}
+
+button.dark-mode:hover {
+    background: #c0392b;
+}
+
+a.dark-mode {
+    color: #ecf0f1;
+}
+
+a.dark-mode:hover {
+    color: #e74c3c;
+}
+head.dark-mode:hover{
+    color: #f700b9;
+} 
+#packageList.dark-mode {
+    background: rgba(44, 62, 80, 0.8);
+}
+
+#packageList li.dark-mode {
+    background: rgba(44, 62, 80, 0.6);
+}
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.form-row label {
+    font-weight: bold;
+    min-width: 130px;
+}
+
+.form-row input,
+.form-row select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+.packagetable th{
+    width: 100%;
+    color: black;
+}
+/* Logo Styling */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 150px;
+}
+
+.logo {
+    width: 150px; /* Adjust size as needed */
+    height: 150px;
+    border-radius: 50%; /* Makes it circular */
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+    margin-top: -90px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.head h1{
+    color: rgb(255, 217, 0);
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    text-shadow: 0px 0px 10px rgb(134, 134, 134);
+}
+.id{
+    background-color: black;
+    padding: 2px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+}
+.index a{
+    background: gold;
+    padding: 5px;
+    border-radius: 5px 5px;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+}
+.good a{
+    background: gold;
+    padding: 5px;
+    border-radius: 5px 5px;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 25px;
+
+}
+.good{
+    margin-top: 20px;
+    transition:  transform 0.2s ease-in-out;
+    
+
+}
+.good a:hover {
+    color: #7e68fc;
+}
+.good:hover{
+    transform: scale(1.2);
+   
+}

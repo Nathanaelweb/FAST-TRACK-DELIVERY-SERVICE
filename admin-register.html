@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Welcome to Fast Tack Delivery Service <br>ADMIN REGISTRATION</h1>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        emailjs.init("iPUsfEq-rgpro9Q7c"); // Replace with your EmailJS user ID
+    </script>
+
+    <h2>Admin Registration</h2>
+
+    <!-- Registration Form -->
+    <form id="registerForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <!-- OTP Verification Section (Initially Hidden) -->
+    <div id="otpVerification" style="display:none;">
+        <h3>Enter OTP</h3>
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" required>
+        <button id="verifyOtp">Verify OTP</button>
+    </div>
+
+    <div id="message"></div>
+
+    <script>
+        // Function to generate a random Agent ID
+        function generateAgentId() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let agentId = '';
+            for (let i = 0; i < 8; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                agentId += characters[randomIndex];
+            }
+            return agentId;
+        }
+
+        // Function to send OTP to the provided email using EmailJS
+        function sendOTPEmail(email, otp) {
+            return emailjs.send("service_l12rg3f", "template_z8gk0gf", {
+                to_email: email,
+                otp: otp
+            });
+        }
+
+        // Handle account creation
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Generate OTP
+            const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
+
+            // Send OTP to the provided email using EmailJS
+            const email = document.getElementById('email').value;
+            sendOTPEmail(email, otp).then(() => {
+                // OTP sent successfully
+                alert("An OTP has been sent to your email. Please enter the OTP to verify your registration.");
+
+                // Hide the registration form and show the OTP input form
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('otpVerification').style.display = 'block';
+
+                // Store OTP in local storage for verification
+                localStorage.setItem('otp', otp);
+            }).catch((error) => {
+                console.error("Error sending OTP email:", error);
+                alert("Failed to send OTP email. Please try again.");
+            });
+        });
+
+        // Handle OTP verification
+        document.getElementById('verifyOtp').addEventListener('click', function () {
+            const enteredOtp = document.getElementById('otp').value;
+            const storedOtp = localStorage.getItem('otp');
+
+            if (enteredOtp && parseInt(enteredOtp) === parseInt(storedOtp)) {
+                // OTP verified, proceed with registration
+
+                // Generate Agent ID
+                const agentId = generateAgentId();
+
+                // Save the account details and Agent ID in localStorage
+                const newAccount = {
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    agentId: agentId
+                };
+
+                // Store account info in localStorage
+                localStorage.setItem('adminAccount', JSON.stringify(newAccount));
+
+                // Redirect to admin-dashboard.html
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                // Incorrect OTP
+                alert("Incorrect OTP. Please try again.");
+            }
+        });
+    </script>
+
+    <script src="admin-register.js"></script>
+</body>
+</html>
