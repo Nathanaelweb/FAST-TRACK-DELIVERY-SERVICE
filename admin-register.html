@@ -94,16 +94,31 @@ document.getElementById('verifyOtp').addEventListener('click', function () {
 
         const userDetails = JSON.parse(localStorage.getItem('userDetails'));
 
-        // Store the account details in localStorage
-        localStorage.setItem('userAccount', JSON.stringify(userDetails));
+        // Create an admin object
+        const newAdmin = {
+            name: userDetails.name,
+            email: userDetails.email,
+            password: userDetails.password
+        };
+
+        // Retrieve existing admins or create an empty array if none exists
+        let admins = JSON.parse(localStorage.getItem('admins')) || [];
+        
+        // Save the new admin to the admins list
+        admins.push(newAdmin);
+        localStorage.setItem('admins', JSON.stringify(admins));
+
+        // Store the account details in localStorage for login session
+        localStorage.setItem('loggedInAdmin', JSON.stringify(newAdmin));
 
         // Redirect to admin dashboard after successful OTP verification
-        window.location.href = 'admin-dashboard.html'; // Change from 'dashboard.html' to 'admin-dashboard.html'
+        window.location.href = 'admin-dashboard.html';
     } else {
         // Incorrect OTP
         alert("Incorrect OTP. Please try again.");
     }
 });
+
 
     </script>
 
