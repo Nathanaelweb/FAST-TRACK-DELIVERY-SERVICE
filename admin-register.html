@@ -85,34 +85,26 @@
         });
 
         // Handle OTP verification
-        document.getElementById('verifyOtp').addEventListener('click', function () {
-            const enteredOtp = document.getElementById('otp').value;
-            const storedOtp = localStorage.getItem('otp');
+document.getElementById('verifyOtp').addEventListener('click', function () {
+    const enteredOtp = document.getElementById('otp').value;
+    const storedOtp = localStorage.getItem('otp');
 
-            if (enteredOtp && parseInt(enteredOtp) === parseInt(storedOtp)) {
-                // OTP verified, proceed with registration
+    if (enteredOtp && enteredOtp === storedOtp) {
+        // OTP verified, proceed with account creation
 
-                // Generate Agent ID
-                const agentId = generateAgentId();
+        const userDetails = JSON.parse(localStorage.getItem('userDetails'));
 
-                // Save the account details and Agent ID in localStorage
-                const newAccount = {
-                    username: document.getElementById('username').value,
-                    email: document.getElementById('email').value,
-                    password: document.getElementById('password').value,
-                    agentId: agentId
-                };
+        // Store the account details in localStorage
+        localStorage.setItem('userAccount', JSON.stringify(userDetails));
 
-                // Store account info in localStorage
-                localStorage.setItem('adminAccount', JSON.stringify(newAccount));
+        // Redirect to admin dashboard after successful OTP verification
+        window.location.href = 'admin-dashboard.html'; // Change from 'dashboard.html' to 'admin-dashboard.html'
+    } else {
+        // Incorrect OTP
+        alert("Incorrect OTP. Please try again.");
+    }
+});
 
-                // Redirect to admin-dashboard.html
-                window.location.href = 'admin-dashboard.html';
-            } else {
-                // Incorrect OTP
-                alert("Incorrect OTP. Please try again.");
-            }
-        });
     </script>
 
     <script src="admin-register.js"></script>
