@@ -1,167 +1,72 @@
-if (Notification.permission === "default") {
-    Notification.requestPermission();
-}
+/// Handle registration and OTP sending
+document.getElementById('registerForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
 
+    // Get user details
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
+    // Generate OTP (6 digits)
+    const otp = Math.floor(100000 + Math.random() * 900000);
 
-function sendReply() {
-    const input = document.getElementById("reply-input");
-    const message = input.value.trim();
+    // Send OTP to the provided email using EmailJS
+    sendOTPEmail(email, otp).then(() => {
+        // OTP sent successfully, alert the user
+        alert("An OTP has been sent to your email. Please verify it.");
 
-    if (message === "") return;
+        // Hide the registration form and show OTP input form
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('otpVerification').style.display = 'block';
 
-    let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-    let timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    messages.push({ sender: "Receiver", text: message, time: timestamp });
-
-    localStorage.setItem("chatMessages", JSON.stringify(messages));
-
-    input.value = "";
-    loadMessages();
-}
-
-let lastMessageCount = 0;
-let audio = new Audio('notification-2-269292.mp3'); // Load the sound file
-
-function playNotificationSound() {
-    audio.currentTime = 0; // Start from the beginning
-    audio.play();
-    setTimeout(() => {
-        audio.pause(); // Pause after 2 seconds
-        audio.currentTime = 0; // Reset the sound
-    }, 2000); // 2000 milliseconds = 2 seconds
-}
-
-
-function loadMessages() {
-    const chatBox = document.getElementById("chat-box");
-    chatBox.innerHTML = "";
-
-    let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-
-    // Check if a new message has been added
-    if (messages.length > lastMessageCount) {
-        let latestMessage = messages[messages.length - 1];
-
-        // Send a notification only if the message is from the sender
-        if (latestMessage.sender === "Sender" && Notification.permission === "granted") {
-            new Notification("New Message from Sender", {
-                body: latestMessage.text,
-                icon: "notification-icon.png"
-            });
-            playNotificationSound(); // Play sound when message is received
-        }
-       
-    }
-
-    lastMessageCount = messages.length; // Update message count
-
-    // Display all messages
-   
-    messages.forEach(msg => {
-        let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message");
-        messageDiv.classList.add(msg.sender === "Sender" ? "sender-message" : "receiver-message");
-    
-        if (msg.text) {
-            messageDiv.innerHTML = `${msg.text} <br> <span class="timestamp">${msg.time}</span>`;
-        } else if (msg.image) {
-            messageDiv.innerHTML = `<img src="${msg.image}" style="max-width:100%;" /><br> <span class="timestamp">${msg.time}</span>`;
-        }
-    
-        chatBox.appendChild(messageDiv);
+        // Store OTP and user details in local storage for later use
+        localStorage.setItem('otp', otp);
+        localStorage.setItem('userDetails', JSON.stringify({ name, email, password }));
+    }).catch((error) => {
+        console.error("Error sending OTP email:", error);
+        alert("Failed to send OTP. Please try again.");
     });
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// Load messages when the page opens
-document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(loadMessages, 1000);
 });
 
-// Check for new messages every 2 seconds
-setInterval(loadMessages, 2000);
-
-function clearChat() {
-    if (confirm("Are you sure you want to clear the chat? This cannot be undone.")) {
-        localStorage.removeItem("chatMessages"); // Clear chat history
-        document.getElementById("chat-box").innerHTML = ""; // Clear UI
-    }
-  }
-  function sendImage(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const imageMessage = {
-                sender: window.location.pathname.includes("sender") ? "Sender" : "Receiver",
-                image: e.target.result,
-                time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-            };
-
-            let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-            messages.push(imageMessage);
-            localStorage.setItem("chatMessages", JSON.stringify(messages));
-            loadMessages();
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-function openCamera() {
-    const video = document.getElementById('camera');
-    const canvas = document.getElementById('snapshot');
-
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            video.style.display = 'block';
-            video.srcObject = stream;
-
-            // Automatically take a snapshot after 3 seconds
-            setTimeout(() => {
-                const context = canvas.getContext('2d');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                stream.getTracks().forEach(track => track.stop());
-                video.style.display = 'none';
-
-                const imageData = canvas.toDataURL('image/png');
-
-                let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-                messages.push({
-                    sender: window.location.pathname.includes("sender") ? "Sender" : "Receiver",
-                    image: imageData,
-                    time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                });
-
-                localStorage.setItem("chatMessages", JSON.stringify(messages));
-                loadMessages();
-            }, 7000); // 3-second delay before taking a snapshot
-        })
-        .catch(err => console.error(err));
-}
-
-function takeSnapshot(video, stream) {
-    const canvas = document.getElementById('snapshot');
-    canvas.style.display = 'block';
-    const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    stream.getTracks().forEach(track => track.stop());
-    const imageData = canvas.toDataURL('image/png');
-
-    let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-    messages.push({
-        sender: window.location.pathname.includes("sender") ? "Sender" : "Receiver",
-        image: imageData,
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+// Function to send OTP email using EmailJS
+function sendOTPEmail(email, otp) {
+    return emailjs.send("service_jzq9flp", "template_bwusr3s", {
+        to_email: email,
+        otp: otp
     });
-
-    localStorage.setItem("chatMessages", JSON.stringify(messages));
-    loadMessages();
 }
+
+// Handle OTP verification
+document.getElementById('verifyOtp').addEventListener('click', function () {
+    const enteredOtp = document.getElementById('otp').value;
+    const storedOtp = localStorage.getItem('otp');
+
+    if (enteredOtp && enteredOtp === storedOtp) {
+        // OTP verified, proceed with account creation
+
+        const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+
+        // Create a user object
+        const newUser = {
+            name: userDetails.name,
+            email: userDetails.email,
+            password: userDetails.password
+        };
+
+        // Retrieve existing users or create an empty array if none exists
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Save the new user to the users list
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Store the account details in localStorage for login session
+        localStorage.setItem('loggedInUser', JSON.stringify(newUser));
+
+        // Redirect to the user dashboard after successful OTP verification
+        window.location.href = 'dashboard.html';
+    } else {
+        // Incorrect OTP
+        alert("Incorrect OTP. Please try again.");
+    }
+});
